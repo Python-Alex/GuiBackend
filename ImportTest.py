@@ -3,6 +3,8 @@ import asyncio
 
 from GuiBackend import Components, GameVars, Specifiers, GOM
 
+print(dir(Components))
+
 pygame.init()
 
 SystemLoop = asyncio.new_event_loop()
@@ -17,9 +19,11 @@ async def TestButtonCallback():
 
 TestButton = Components.Button("Test", (10, 10), (100, 30), (255,255,255), 1, TestButtonCallback)
 TestLabel = Components.Label("Label", (10, 40), (100,30))
+TestInput = Components.TextInput((10, 70), (100, 30), (255,255,255), 1)
 
 SystemGOM.AddObject(TestButton)
 SystemGOM.AddObject(TestLabel)
+SystemGOM.AddObject(TestInput)
 
 async def GameLoop():
     while(True):
@@ -44,7 +48,16 @@ async def GameLoop():
                         SystemGOM.SelectedObject = component 
 
             elif(event.type == pygame.KEYDOWN):
-                continue
+                if(SystemGOM.SelectedObject and Specifiers.Input in SystemGOM.SelectedObject.__class__.__mro__):
+                    
+                    if(event.unicode == "\x08"):
+                        SystemGOM.SelectedObject.text_string = SystemGOM.SelectedObject.text_string[:-1]
+                    elif(event.unicode == "\t"):
+                        SystemGOM.SelectedObject.text_string += " " * 4
+
+                    else:
+                        SystemGOM.SelectedObject.text_string += event.unicode 
+
 
         pygame.display.update()
         LocalClock.tick(144)

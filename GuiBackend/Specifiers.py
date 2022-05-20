@@ -88,10 +88,4 @@ class Input(object):
 
     """Specifies a Component to Declare a Text Input
     """
-
-    # Parameters
-    # Non-Initialized
-    text_buffer: str
-
-    def __init__(self):
-        self.text_buffer = ""
+    pass

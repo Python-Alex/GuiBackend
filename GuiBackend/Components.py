@@ -64,7 +64,7 @@ class Base(pygame.Rect):
         elif(Specifiers.LeftTextAlign in self.__class__.__mro__):
             pygame.display.get_surface().blit(text, text.get_rect(center=(self.x + self.left_buffer, self.y + (self.h // 2))))
         elif(Specifiers.RightTextAlign in self.__class__.__mro__):
-            pygame.display.get_surface().blit(text, text.get_rect(center=(self.x + self.right_buffer, self.y + (self.h // 2))))
+            pygame.display.get_surface().blit(text, (self.x + self.right_buffer, self.y + (self.h // 2)))
             
 
 class Button(Base, Specifiers.ClickAction, Specifiers.CenterTextAlign):
@@ -120,6 +120,8 @@ class TextInput(Base, Specifiers.LeftTextAlign, Specifiers.Input):
 
     def __init__(self, location: tuple, rsize: tuple, border_color: tuple, border_width: int):
         super().__init__(location[0], location[1], rsize[0], rsize[1], border_color, border_width)
+        Specifiers.LeftTextAlign.__init__(self, "", rsize[1] // 2, pygame.font.get_default_font(), 5)
+        Specifiers.Input.__init__(self)
 
         self.location = location
         self.rsize = rsize
